@@ -29,8 +29,8 @@ public:
         }
     };
 
-    void render(SDL_Texture * texture);
-    void render(RenderableObject & obj);
+    void render(SDL_Texture * texture,bool flip = false);
+    void render(RenderableObject & obj,bool flip = false);
     void renderMap(Map & scenario_map);
     static SDL_Texture * loadTexture(const char * file_path);
     void clearScreen();

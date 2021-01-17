@@ -13,7 +13,8 @@ Character::Character(int x,int y, int h,int w, std::vector<SDL_Texture*> walk_te
     setWidgth(w);
     this->walk_textures[0] = walk_textures[0];
     this->walk_textures[1] = walk_textures[1];
-
+    this->walk_textures[2] = walk_textures[2];  
+    this->walk_textures[3] = walk_textures[3];
     setTexture(walk_textures[0].back());
 }
 Character::~Character()
@@ -35,17 +36,16 @@ void Character::move(int key)
     }*/
     switch (key)
     {   
-        
+         case SDLK_UP:
+            setY(getY()-speed);
+            std::cout<<"up\n";
+            setTexture(walk_textures[0][move_counter]);
+            move_counter++;
+            break;
         case SDLK_DOWN:
             /* code */
             setY(getY()+speed);
             std::cout<<"down\n"<<move_counter<<"\n";
-            setTexture(walk_textures[0][move_counter]);
-            move_counter++;
-            break;
-        case SDLK_UP:
-            setY(getY()-speed);
-            std::cout<<"up\n";
             setTexture(walk_textures[1][move_counter]);
             move_counter++;
             break;

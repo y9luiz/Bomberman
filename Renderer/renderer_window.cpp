@@ -38,13 +38,14 @@ SDL_Texture * RendererWindow::loadTexture(const char * file_path)
     return texture;
 }
     
-void RendererWindow::render(SDL_Texture * texture)
+void RendererWindow::render(SDL_Texture * texture, bool flip)
 {
     SDL_RenderCopy(renderer,texture,NULL,NULL);
     
 }
 #include <iostream>
-void RendererWindow::render(RenderableObject & obj)
+
+void RendererWindow::render(RenderableObject & obj, bool flip )
 {
     //std::cout<<"bora "<<obj.getTexture()<<"\n";
     SDL_Rect src;
@@ -61,9 +62,16 @@ void RendererWindow::render(RenderableObject & obj)
     {
         src.h = src.h*2;
     }
-    SDL_RenderCopy(renderer,obj.getTexture(),&src,&dst);
-}
+    if(flip){
+        SDL_RendererFlip flip;
 
+        flip =SDL_FLIP_HORIZONTAL;
+        SDL_RenderCopyEx(renderer,obj.getTexture(),&src,&dst,0,NULL,flip);
+    }
+    else{
+        SDL_RenderCopy(renderer,obj.getTexture(),&src,&dst);
+    }
+}
 void RendererWindow::renderMap(Map & scenario_map )
 {
 

@@ -5,7 +5,7 @@ Character::Character()
 
 }
 
-Character::Character(int x,int y, int h,int w, std::vector<SDL_Texture*> walk_textures[4])
+Character::Character(int x,int y, int h,int w, std::vector<std::shared_ptr<SDL_Texture>> walk_textures[4])
 {
     setX(x);
     setY(y);
@@ -15,7 +15,8 @@ Character::Character(int x,int y, int h,int w, std::vector<SDL_Texture*> walk_te
     this->walk_textures[1] = walk_textures[1];
     this->walk_textures[2] = walk_textures[2];  
     this->walk_textures[3] = walk_textures[3];
-    setTexture(walk_textures[0].back());
+    std::shared_ptr<SDL_Texture> last_ptr = walk_textures[0].back();
+    setTexture(last_ptr.get());
 }
 Character::~Character()
 {
@@ -39,24 +40,24 @@ void Character::move(int key)
          case SDLK_UP:
             setY(getY()-speed);
             std::cout<<"up\n";
-            setTexture(walk_textures[0][move_counter]);
+            setTexture(walk_textures[0][move_counter].get());
             move_counter++;
             break;
         case SDLK_DOWN:
             /* code */
             setY(getY()+speed);
             std::cout<<"down\n"<<move_counter<<"\n";
-            setTexture(walk_textures[1][move_counter]);
+            setTexture(walk_textures[1][move_counter].get());
             move_counter++;
             break;
         case SDLK_RIGHT:
             setX(getX()+speed);
-            setTexture(walk_textures[2][move_counter]);
+            setTexture(walk_textures[2][move_counter].get());
             move_counter++;
             break;
         case SDLK_LEFT:
             setX(getX()-speed);
-            setTexture(walk_textures[3][move_counter]);
+            setTexture(walk_textures[3][move_counter].get());
             move_counter++;
             break;
         default:

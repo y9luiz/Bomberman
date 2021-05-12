@@ -3,12 +3,16 @@
 #include <SDL2/SDL_image.h>
 #include <thread>
 
+
+#include "Scenario/defs.hpp"
 #include <Renderer/renderer_window.hpp>
 #include <Scenario/wall_block.hpp>
 #include <Scenario/map.hpp>
 #include "IO/map_reader.hpp"
 #include <Char/char.hpp>
 #include <unistd.h>
+#include <memory>
+#include "Memory/sdl_deleter.hpp"
 using namespace std;
 
 SDL_Renderer *  RendererWindow::renderer = NULL;
@@ -30,11 +34,12 @@ int main(int argc, char ** argv)
         bool isRunning = true;
         
         SDL_Event event;
-        SDL_Texture *  texture = RendererWindow::loadTexture(WALL_IMAGE_PATH);
-        SDL_Texture *  texture2 = RendererWindow::loadTexture(GROUND_IMAGE_PATH);
-        std::vector<SDL_Texture *> char_texture [4]; 
-
-        char_texture[0].push_back(RendererWindow::loadTexture("../res/Chars/Bomberman/back_walk6.jpg"));
+	std::shared_ptr<SDL_Texture>  texture = std::move(RendererWindow::loadTexture(WALL_IMAGE_PATH));
+	auto  texture2 = std::move(RendererWindow::loadTexture(GROUND_IMAGE_PATH));
+        std::vector<std::shared_ptr<SDL_Texture>> char_texture [4]; 
+        std::shared_ptr<SDL_Texture> texture_ptr;
+       
+        /*char_texture[0].push_back(RendererWindow::loadTexture("../res/Chars/Bomberman/back_walk6.jpg"));
         char_texture[0].push_back(RendererWindow::loadTexture("../res/Chars/Bomberman/back_walk5.jpg"));
         char_texture[0].push_back(RendererWindow::loadTexture("../res/Chars/Bomberman/back_walk4.jpg"));
         char_texture[0].push_back(RendererWindow::loadTexture("../res/Chars/Bomberman/back_walk3.jpg"));
@@ -65,12 +70,12 @@ int main(int argc, char ** argv)
         char_texture[3].push_back(RendererWindow::loadTexture("../res/Chars/Bomberman/left_walk2.jpg"));
         char_texture[3].push_back(RendererWindow::loadTexture("../res/Chars/Bomberman/left_walk1.jpg"));
         
-
+        */
         std::map<char,SDL_Texture*> texture_dict;
-        texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_WALL,texture));
-        texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_GROUND,texture2));
+        texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_WALL,texture.get()));
+        texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_GROUND,texture2.get()));
         //texture_dict.insert(std::pair<char,SDL_Texture*>(PLAYER,char_texture[0].back()));
-        Character p(30,30,32,32,char_texture);
+        //Character p(30,30,32,32,char_texture);
         initializeMapObjectDict(scene_map,texture_dict);
         //Character *  player = scene_map.getPlayer();
 
@@ -78,13 +83,14 @@ int main(int argc, char ** argv)
         {
             renderer_window.clearScreen();
             renderer_window.renderMap(scene_map);   
-            renderer_window.render(p);
+            //renderer_window.render(p);
             renderer_window.display();
-            if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+	    std::cout<<"ok\n";
+	    if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
             {
                 isRunning = false;
             }
-            switch( event.type ){
+            /*switch( event.type ){
                 case SDL_KEYDOWN:
                     if( event.key.keysym.sym ){
                         p.move(event.key.keysym.sym);
@@ -92,7 +98,7 @@ int main(int argc, char ** argv)
                     }
                 default:
                     break;
-            }
+            }*/
             usleep(10000);
         }
 

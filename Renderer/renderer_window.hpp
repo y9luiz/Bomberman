@@ -4,6 +4,7 @@
 #include "../Scenario/Common/renderable_object.hpp"
 #include "../Scenario/map.hpp"
 #include "../Scenario/defs.hpp"
+#include "../Memory/sdl_deleter.hpp"
 class RendererWindow
 {
 private:
@@ -32,7 +33,7 @@ public:
     void render(SDL_Texture * texture,bool flip = false);
     void render(RenderableObject & obj,bool flip = false);
     void renderMap(Map & scenario_map);
-    static SDL_Texture * loadTexture(const char * file_path);
+    static std::unique_ptr<SDL_Texture,SDL_Deleter> loadTexture(const char * file_path);
     void clearScreen();
     void display();
 

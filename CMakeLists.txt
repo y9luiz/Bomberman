@@ -3,10 +3,12 @@ project(BomberMan)
 find_package(SDL2 REQUIRED)
 INCLUDE(FindPkgConfig)
 
+
+
 PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 
 include_directories(${SDL2_INCLUDE_DIRS})
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(Renderer)
 add_subdirectory(Scenario)

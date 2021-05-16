@@ -31,10 +31,12 @@ int main(int argc, char ** argv)
         
         // create a render object to render the scenario and the objects
         RendererWindow renderer_window("Bomber Man v1",960,480);
-        renderer_window.setBlocksSize(960/scene_map.w,480/(scene_map.h));
-        std::cout<<scene_map.h<<"\n";
+        const int block_w = 960/scene_map.w;
+        const int block_h = 480/(scene_map.h);
+        renderer_window.setBlocksSize(block_w,block_h);
+
         bool isRunning = true;
-        
+
         SDL_Event event;
         
         //store the data from the wall blocks into a share_ptr to be placed on many places of the screen
@@ -91,9 +93,9 @@ int main(int argc, char ** argv)
 
         loadTexturesFromCharacter("../res/Chars/Bomberman/",walk_directions,player_textures);
 
-        Character p(30,30,32,32,player_textures);
-        WallBlock * wall_block = new WallBlock(0,0,32,32,texture.get());
-        GroundBlock * ground_block = new GroundBlock(0,0,32,32,texture2.get());
+        Character p(30,30,block_w,block_h,player_textures);
+        WallBlock * wall_block = new WallBlock(0,0,block_w,block_h,texture.get());
+        GroundBlock * ground_block = new GroundBlock(0,0,block_w,block_h,texture2.get());
 
         scene_map.dict_texture.insert(std::pair<char,RenderableObject*>(BLOCK_WALL,(RenderableObject*) wall_block));  
         scene_map.dict_texture.insert(std::pair<char,RenderableObject*>(BLOCK_GROUND,(RenderableObject*)ground_block));        

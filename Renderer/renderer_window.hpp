@@ -10,11 +10,12 @@ class RendererWindow
 private:
     /* data */
     SDL_Window * window;
-    static SDL_Renderer* renderer;
     char * tittle;
     int width;
     int height;
 public:
+    static SDL_Renderer* renderer;
+
     RendererWindow(const char * window_tittle, int width, int height);
     inline ~RendererWindow()
     {
@@ -33,7 +34,7 @@ public:
     void render(SDL_Texture * texture,bool flip = false);
     void render(RenderableObject & obj,bool flip = false);
     void renderMap(Map & scenario_map);
-    static std::unique_ptr<SDL_Texture,SDL_Deleter> loadTexture(const char * file_path);
+    static SDL_Texture* loadTexture(const char * file_path);
     void clearScreen();
     void display();
 

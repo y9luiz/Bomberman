@@ -23,20 +23,16 @@ RendererWindow::RendererWindow(const char * window_tittle, int width, int height
         throw std::runtime_error(SDL_GetError());
     }
 }
-
-std::unique_ptr<SDL_Texture,SDL_Deleter> RendererWindow::loadTexture(const char * file_path)
+SDL_Texture* RendererWindow::loadTexture(const char * file_path)
 {
     SDL_Texture * texture = NULL;
-
     texture = IMG_LoadTexture(renderer,file_path);
-    std::unique_ptr<SDL_Texture,SDL_Deleter> texture_ptr = std::unique_ptr<SDL_Texture,SDL_Deleter>(texture,SDL_Deleter());
-
     if( texture == NULL)
     {
         throw std::runtime_error(SDL_GetError());
     }
     //std::unique_ptr<SDL_Texture> texture_ptr = std::unique_ptr<SDL_Texture>(*texture,SDL_Deleter());
-    return  texture_ptr;
+    return  texture;
 }
     
 void RendererWindow::render(SDL_Texture * texture, bool flip)

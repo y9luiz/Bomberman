@@ -35,9 +35,11 @@ int main(int argc, char ** argv)
         SDL_Event event;
         
         //store the data from the wall blocks into a share_ptr to be placed on many places of the screen
-        std::shared_ptr<SDL_Texture>  texture = std::move(RendererWindow::loadTexture(WALL_IMAGE_PATH));
+        std::shared_ptr<SDL_Texture>  texture =  
+            std::shared_ptr<SDL_Texture>(RendererWindow::loadTexture(WALL_IMAGE_PATH),SDL_Deleter());
         //do the same with the ground blocks
-        auto  texture2 = std::move(RendererWindow::loadTexture(GROUND_IMAGE_PATH));
+        std::shared_ptr<SDL_Texture>  texture2 = 
+            std::shared_ptr<SDL_Texture>(RendererWindow::loadTexture(GROUND_IMAGE_PATH),SDL_Deleter());
         
        
         auto loadTexturesFromCharacter = 
@@ -55,40 +57,43 @@ int main(int argc, char ** argv)
                 const std::string suffix = ".jpg";
                 const std::string separator = "/";
 
-                std::unique_ptr<CircularList<SDL_Texture*,SDL_Deleter>[]> char_walk_textures = 
-                    std::unique_ptr<CircularList<SDL_Texture*,SDL_Deleter>[]>(new CircularList<SDL_Texture*,SDL_Deleter>[size]);
+                CircularList <SDL_Texture*,SDL_Deleter> char_walk_textures[4];
                 // a walk_direction name is the direction that character is walking in a string
                 // e.g. back_walk, front_walk
                 int i = 0;
-                SDL_Texture * ptr;
+
                 for(auto walk_direction:walk_directions)
                 {   
-                    for(i=0;i<size;i++)
+                    for(int j=0;j<size;j++)
                     {
-                        std::string texture_filename = texture_folder_path+walk_direction + std::to_string(i+1)+ suffix;
-                        ptr = RendererWindow::loadTexture(texture_filename.c_str()).get();
-                        char_walk_textures[i].push_back(ptr);
-                    
+                        std::string texture_filename = texture_folder_path+walk_direction + std::to_string(j+1)+ suffix;
+                        SDL_Texture * ptr = RendererWindow::loadTexture(texture_filename.c_str());
+                        char_walk_textures[i].push_back(ptr);    
                     }
+                    i++;
                 }
-                CircularList<SDL_Texture*,SDL_Deleter> cl = char_walk_textures[0].copy(); // null list, why?
-                direction_textures.down = char_walk_textures[0].copy();
-                direction_textures.up = char_walk_textures[1].copy();
-                direction_textures.left = char_walk_textures[2].copy();
-                direction_textures.rigth = char_walk_textures[3].copy();
+                
+
+                direction_textures.up = char_walk_textures[0].copy();
+                for(int i=0;i<4;i++)
+                {
+                    std::cout<<direction_textures.up.getNextData()<<"\n";
+                }
+                direction_textures.down = char_walk_textures[1].copy();
+                direction_textures.rigth = char_walk_textures[2].copy();
+                direction_textures.left = char_walk_textures[3].copy();
                 
             };  
         
         std::vector<std::string> walk_directions = {"back_walk","front_walk","right_walk","left_walk"}; 
         DirectionTextures  player_textures;
+
         loadTexturesFromCharacter("../res/Chars/Bomberman/",walk_directions,player_textures);
+
         std::map<char,SDL_Texture*> texture_dict;
         texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_WALL,texture.get()));
         texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_GROUND,texture2.get()));
-        //player_textures[0].back();
-	    texture_dict.insert(std::pair<char,SDL_Texture*>(PLAYER,player_textures.down.getNextData()));
-
-        std::shared_ptr<SDL_Texture> ptr = std::move(RendererWindow::loadTexture("../res/Chars/Bomberman/left_walk1.jpg"));
+       
         Character p(30,30,32,32,player_textures);
 
         initializeMapObjectDict(scene_map,texture_dict);
@@ -101,19 +106,20 @@ int main(int argc, char ** argv)
             renderer_window.renderMap(scene_map);   
             renderer_window.render(p);
             renderer_window.display();
+
 	         if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
              {
                  isRunning = false;
              }
-            // switch( event.type ){
-            //     case SDL_KEYDOWN:
-            //         if( event.key.keysym.sym ){
-            //             p.move(event.key.keysym.sym);
-            //             event.key.keysym.sym = 0;
-            //         }
-            //     default:
-            //         break;
-            // }
+             switch( event.type ){
+                 case SDL_KEYDOWN:
+                     if( event.key.keysym.sym ){
+                         p.move(event.key.keysym.sym);
+                         event.key.keysym.sym = 0;
+                     }
+                 default:
+                     break;
+            }
             usleep(10000);
         }
 

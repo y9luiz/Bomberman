@@ -11,15 +11,12 @@ Character::Character(int x,int y, int h,int w, DirectionTextures & direction_tex
     setY(y);
     setHeight(h);
     setWidgth(w);
-    std::cout<<"dammit\n\n";
 
     this->direction_textures_.down = direction_textures.down.copy();
-    std::cout<<"ok\n";
-
     this->direction_textures_.rigth = direction_textures.rigth.copy();
     this->direction_textures_.left = direction_textures.left.copy();
     this->direction_textures_.up = direction_textures.up.copy();
-    std::cout<<direction_textures_.down.getHead()->getData()<<"\n";
+    
     setTexture(direction_textures_.down.getHead()->getData());
 }
 Character::~Character()
@@ -43,20 +40,22 @@ void Character::move(int key)
     {   
          case SDLK_UP:
             setY(getY()-speed);
-            std::cout<<"up\n";
+            
             setTexture(direction_textures_.up.getNextData());
             move_counter++;
             break;
         case SDLK_DOWN:
             /* code */
             setY(getY()+speed);
-            std::cout<<"down\n"<<move_counter<<"\n";
             setTexture(direction_textures_.down.getNextData());
             move_counter++;
             break;
         case SDLK_RIGHT:
             setX(getX()+speed);
-            setTexture(direction_textures_.rigth.getNextData());
+            SDL_Texture * ptr;
+            ptr = direction_textures_.rigth.getNextData();
+            std::cout<<ptr<<"\n";
+            setTexture(ptr);
             move_counter++;
             break;
         case SDLK_LEFT:

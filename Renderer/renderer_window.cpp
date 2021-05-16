@@ -65,7 +65,6 @@ void RendererWindow::render(RenderableObject & obj, bool flip )
     }
     if(flip){
         SDL_RendererFlip flip;
-
         flip =SDL_FLIP_HORIZONTAL;
         SDL_RenderCopyEx(renderer,obj.getTexture(),&src,&dst,0,NULL,flip);
     }

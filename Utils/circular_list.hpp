@@ -1,7 +1,10 @@
+#pragma once
 #include <memory>
-
+#include <string>
 #include <iostream>
-template <class T>
+
+
+template <class T,class Deleter=std::default_delete<T>>
 /**
  * @brief this class is a circular list that's point to a custom data type
  * 
@@ -30,6 +33,7 @@ class CircularList
                 // set the first element equals to the next element
                 head_->setNext(head_);
         }
+       
         ~CircularList()
         {
                 Node ** it = &(head_);
@@ -92,7 +96,31 @@ class CircularList
                 }
                 return it;
         }
-       
+        CircularList & copy()
+        {
+                CircularList<T,Deleter> * l = new CircularList<T,Deleter>();
+                Node *it = head_;
+               
+                while(it->getNext() != head_)
+                {
+                        l->push_back(it->getData());
+                        it = it->getNext();
+                }
+                return *l;
+        }
+        inline Node * getHead(){
+                return head_;
+        }
+        T getNextData()
+        {
+            head_ = head_->getNext();
+            return head_->getData();
+        }
+        friend std::string & to_string(CircularList<std::shared_ptr<int>> cl);
+
+        Node * head_;
+
+    private:
         void remove(Node *& n)
         {
                Node *ptr = searchNode(n,head_);
@@ -100,10 +128,6 @@ class CircularList
                delete ptr;   
                size_--;
         }
-        Node * head_;
-
-    private:
-        
         Node * searchNode(Node * n, Node * start_node)
         {
                 Node* it = nullptr;
@@ -159,6 +183,7 @@ class CircularList
                         {
                                 return next_;
                         }
+                        inline T getData(){return data_;};
                 private:   
                         /**
                          * @brief data value of the node
@@ -174,3 +199,33 @@ class CircularList
         size_t size_;
 
 };
+/*
+std::string to_string(CircularList<int> & cl)
+{
+        std::string output ("");
+        auto it = cl.head_;
+        bool running  = true;
+        while(running)
+        {
+                output+=std::to_string(it->getData())+" ";
+                it = it->getNext();
+                if(it == cl.head_)
+                        running = false;
+        }
+        return output.c_str();
+}
+
+std::string & to_string(CircularList<std::shared_ptr<int>> cl)
+{
+        std::string output ("");
+        auto it = cl.head_;
+        bool running  = true;
+        while(running)
+        {
+                output+=std::to_string( *(it->getData().get()))+" ";
+                it = it->getNext();
+                if(it == cl.head_)
+                        running = false;
+        }
+        return output;
+}*/

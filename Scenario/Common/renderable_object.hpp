@@ -4,19 +4,20 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+
 class RenderableObject
 {
-protected:
-    SDL_Texture * texture;
-private:
-    char * name;
-    SDL_Rect rect;
-public:
+    protected:
+        SDL_Texture * texture;
+    private:
+        char * name;
+        SDL_Rect rect;
+    public:
 
-    ~RenderableObject(){
-        //clearTexture();
-        is_player = false;
-    };
+        ~RenderableObject(){
+            //clearTexture();
+            is_player = false;
+        };
     inline void setTexture(SDL_Texture * texture){ this->texture = texture;};
     inline  SDL_Texture* getTexture(){return texture;};
     inline void setHeight(int height){rect.h = height;};

@@ -5,18 +5,22 @@ Character::Character()
 
 }
 
-Character::Character(int x,int y, int h,int w, std::vector<std::shared_ptr<SDL_Texture>> walk_textures[4])
+Character::Character(int x,int y, int h,int w, DirectionTextures & direction_textures)
 {
     setX(x);
     setY(y);
     setHeight(h);
     setWidgth(w);
-    this->walk_textures[0] = walk_textures[0];
-    this->walk_textures[1] = walk_textures[1];
-    this->walk_textures[2] = walk_textures[2];  
-    this->walk_textures[3] = walk_textures[3];
-    std::shared_ptr<SDL_Texture> last_ptr = walk_textures[0].back();
-    setTexture(last_ptr.get());
+    std::cout<<"dammit\n\n";
+
+    this->direction_textures_.down = direction_textures.down.copy();
+    std::cout<<"ok\n";
+
+    this->direction_textures_.rigth = direction_textures.rigth.copy();
+    this->direction_textures_.left = direction_textures.left.copy();
+    this->direction_textures_.up = direction_textures.up.copy();
+    std::cout<<direction_textures_.down.getHead()->getData()<<"\n";
+    setTexture(direction_textures_.down.getHead()->getData());
 }
 Character::~Character()
 {
@@ -40,24 +44,24 @@ void Character::move(int key)
          case SDLK_UP:
             setY(getY()-speed);
             std::cout<<"up\n";
-            setTexture(walk_textures[0][move_counter].get());
+            setTexture(direction_textures_.up.getNextData());
             move_counter++;
             break;
         case SDLK_DOWN:
             /* code */
             setY(getY()+speed);
             std::cout<<"down\n"<<move_counter<<"\n";
-            setTexture(walk_textures[1][move_counter].get());
+            setTexture(direction_textures_.down.getNextData());
             move_counter++;
             break;
         case SDLK_RIGHT:
             setX(getX()+speed);
-            setTexture(walk_textures[2][move_counter].get());
+            setTexture(direction_textures_.rigth.getNextData());
             move_counter++;
             break;
         case SDLK_LEFT:
             setX(getX()-speed);
-            setTexture(walk_textures[3][move_counter].get());
+            setTexture(direction_textures_.left.getNextData());
             move_counter++;
             break;
         default:

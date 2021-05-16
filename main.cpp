@@ -14,6 +14,8 @@
 using namespace std;
 SDL_Renderer *  RendererWindow::renderer = NULL;
 
+#define NUMBER_OF_PLAYER_SPRITES 6
+
 int main(int argc, char ** argv)
 {
     try
@@ -64,7 +66,7 @@ int main(int argc, char ** argv)
 
                 for(auto walk_direction:walk_directions)
                 {   
-                    for(int j=0;j<size;j++)
+                    for(int j=0;j<NUMBER_OF_PLAYER_SPRITES;j++)
                     {
                         std::string texture_filename = texture_folder_path+walk_direction + std::to_string(j+1)+ suffix;
                         SDL_Texture * ptr = RendererWindow::loadTexture(texture_filename.c_str());
@@ -75,7 +77,7 @@ int main(int argc, char ** argv)
                 
 
                 direction_textures.up = char_walk_textures[0].copy();
-                for(int i=0;i<4;i++)
+                for(int i=0;i<NUMBER_OF_PLAYER_SPRITES;i++)
                 {
                     std::cout<<direction_textures.up.getNextData()<<"\n";
                 }

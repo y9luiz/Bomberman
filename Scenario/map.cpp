@@ -25,7 +25,7 @@ void Map::initializePlayer(Character  player){
     int i = player.getY();
     int j = player.getX();
     //data[i][j] = PLAYER;
-    dict_texture[i*w+j] = player;
+    //dict_texture[i*w+j] = player;
 
 }
 void Map::update()

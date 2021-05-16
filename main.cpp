@@ -74,8 +74,6 @@ int main(int argc, char ** argv)
                     }
                     i++;
                 }
-                
-
                 direction_textures.up = char_walk_textures[0].copy();
                 for(int i=0;i<NUMBER_OF_PLAYER_SPRITES;i++)
                 {
@@ -92,16 +90,13 @@ int main(int argc, char ** argv)
 
         loadTexturesFromCharacter("../res/Chars/Bomberman/",walk_directions,player_textures);
 
-        std::map<char,SDL_Texture*> texture_dict;
-        texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_WALL,texture.get()));
-        texture_dict.insert(std::pair<char,SDL_Texture*>(BLOCK_GROUND,texture2.get()));
-       
         Character p(30,30,32,32,player_textures);
-
-        initializeMapObjectDict(scene_map,texture_dict);
+        WallBlock * wall_block = new WallBlock(0,0,32,32,texture.get());
+        GroundBlock * ground_block = new GroundBlock(0,0,32,32,texture2.get());
         
-        //Character *  player = scene_map.getPlayer();
-
+        scene_map.dict_texture.insert(std::pair<char,RenderableObject*>(BLOCK_WALL,(RenderableObject*) wall_block));  
+        scene_map.dict_texture.insert(std::pair<char,RenderableObject*>(BLOCK_GROUND,(RenderableObject*)ground_block));        
+      
         while(isRunning)
         {
             renderer_window.clearScreen();

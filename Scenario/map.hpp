@@ -9,7 +9,7 @@ class Map{
         int w;
         int h;
         char **data;
-        std::map<int,RenderableObject> dict_texture;
+        std::map<char,RenderableObject*> dict_texture;
         Character* getPlayer();
         void update();
         void initializePlayer(Character player_texture);

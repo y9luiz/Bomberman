@@ -44,7 +44,6 @@ void RendererWindow::render(SDL_Texture * texture, bool flip)
 
 void RendererWindow::render(RenderableObject & obj, bool flip )
 {
-    //std::cout<<"bora "<<obj.getTexture()<<"\n";
     SDL_Rect src;
     src.x=0;
     src.y=0;
@@ -52,13 +51,7 @@ void RendererWindow::render(RenderableObject & obj, bool flip )
     src.w=32;
     
     SDL_Rect dst = obj.getRect();
-    dst.x=dst.x;
-    dst.w=dst.w;
-    dst.h=dst.h;
-    if (obj.is_player)
-    {
-        src.h = src.h*2;
-    }
+   
     if(flip){
         SDL_RendererFlip flip;
         flip =SDL_FLIP_HORIZONTAL;
@@ -71,11 +64,21 @@ void RendererWindow::render(RenderableObject & obj, bool flip )
 void RendererWindow::renderMap(Map & scenario_map )
 {
 
+    char val;
     for(int i =0;i<scenario_map.h;i++)
     {
         for(int j=0;j<scenario_map.w;j++)
         {
-            render(scenario_map.dict_texture[i*scenario_map.w+j]);
+        
+            val = scenario_map.data[i][j];
+           
+            if(scenario_map.dict_texture[val]!= nullptr){
+                scenario_map.dict_texture[val]->setX(j*32);
+                scenario_map.dict_texture[val]->setY(i*32);
+
+                render(*scenario_map.dict_texture[val]);
+            }
+            
 
         }
     }

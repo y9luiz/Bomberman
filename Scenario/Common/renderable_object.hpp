@@ -13,7 +13,6 @@ class RenderableObject
         char * name;
         SDL_Rect rect;
     public:
-
         ~RenderableObject(){
             //clearTexture();
             is_player = false;

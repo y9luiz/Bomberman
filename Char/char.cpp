@@ -40,7 +40,6 @@ void Character::move(int key)
     {   
          case SDLK_UP:
             setY(getY()-speed);
-            
             setTexture(direction_textures_.up.getNextData());
             move_counter++;
             break;
@@ -52,10 +51,7 @@ void Character::move(int key)
             break;
         case SDLK_RIGHT:
             setX(getX()+speed);
-            SDL_Texture * ptr;
-            ptr = direction_textures_.rigth.getNextData();
-            std::cout<<ptr<<"\n";
-            setTexture(ptr);
+            setTexture(direction_textures_.rigth.getNextData());
             move_counter++;
             break;
         case SDLK_LEFT:

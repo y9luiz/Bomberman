@@ -25,7 +25,7 @@ Map  readMap(const char * filename)
 
         lines.push_back(std::string());
     }
-
+    lines.pop_back(); //popping a empty string
     m.data = new char*[lines.size()];
     m.w = lines[0].length();
     m.h =lines.size();
@@ -37,8 +37,6 @@ Map  readMap(const char * filename)
             m.data[i][j] = lines[i][j];
         }
     }
-
-
     return m;
 }
 #endif

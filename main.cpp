@@ -31,7 +31,8 @@ int main(int argc, char ** argv)
         
         // create a render object to render the scenario and the objects
         RendererWindow renderer_window("Bomber Man v1",960,480);
-
+        renderer_window.setBlocksSize(960/scene_map.w,480/(scene_map.h));
+        std::cout<<scene_map.h<<"\n";
         bool isRunning = true;
         
         SDL_Event event;
@@ -93,7 +94,7 @@ int main(int argc, char ** argv)
         Character p(30,30,32,32,player_textures);
         WallBlock * wall_block = new WallBlock(0,0,32,32,texture.get());
         GroundBlock * ground_block = new GroundBlock(0,0,32,32,texture2.get());
-        
+
         scene_map.dict_texture.insert(std::pair<char,RenderableObject*>(BLOCK_WALL,(RenderableObject*) wall_block));  
         scene_map.dict_texture.insert(std::pair<char,RenderableObject*>(BLOCK_GROUND,(RenderableObject*)ground_block));        
       

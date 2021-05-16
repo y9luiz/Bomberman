@@ -13,9 +13,10 @@ private:
     char * tittle;
     int width;
     int height;
+    uint8_t block_h_;
+    uint8_t block_w_;
 public:
     static SDL_Renderer* renderer;
-
     RendererWindow(const char * window_tittle, int width, int height);
     inline ~RendererWindow()
     {
@@ -30,13 +31,12 @@ public:
             renderer = NULL;
         }
     };
-
     void render(SDL_Texture * texture,bool flip = false);
     void render(RenderableObject & obj,bool flip = false);
     void renderMap(Map & scenario_map);
     static SDL_Texture* loadTexture(const char * file_path);
     void clearScreen();
     void display();
-
+    inline void setBlocksSize(uint8_t block_w,uint8_t block_h){block_h_ = block_h; block_w_ = block_w;};
 };
 

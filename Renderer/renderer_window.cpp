@@ -47,8 +47,8 @@ void RendererWindow::render(RenderableObject & obj, bool flip )
     SDL_Rect src;
     src.x=0;
     src.y=0;
-    src.h=32;
-    src.w=32;
+    src.h=block_h_;
+    src.w=block_w_;
     
     SDL_Rect dst = obj.getRect();
    
@@ -69,17 +69,13 @@ void RendererWindow::renderMap(Map & scenario_map )
     {
         for(int j=0;j<scenario_map.w;j++)
         {
-        
             val = scenario_map.data[i][j];
-           
+            
             if(scenario_map.dict_texture[val]!= nullptr){
-                scenario_map.dict_texture[val]->setX(j*32);
-                scenario_map.dict_texture[val]->setY(i*32);
-
+                scenario_map.dict_texture[val]->setX(j*block_w_);
+                scenario_map.dict_texture[val]->setY(i*block_h_);
                 render(*scenario_map.dict_texture[val]);
             }
-            
-
         }
     }
 }

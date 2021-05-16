@@ -106,6 +106,7 @@ class CircularList
                         l->push_back(it->getData());
                         it = it->getNext();
                 }
+                l->push_back(it->getData());
                 return *l;
         }
         inline Node * getHead(){
@@ -113,8 +114,17 @@ class CircularList
         }
         T getNextData()
         {
-            head_ = head_->getNext();
-            return head_->getData();
+            auto setNodePtr = [](Node *& tgt_ptr,Node * src_ptr){
+                    tgt_ptr = src_ptr;
+            };
+            T data = head_->getData();
+
+            setNodePtr(head_,head_->getNext());
+            return data;
+        }
+        inline size_t getSize()
+        {
+                return size_;
         }
         friend std::string & to_string(CircularList<std::shared_ptr<int>> cl);
 

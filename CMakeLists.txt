@@ -20,7 +20,7 @@ add_subdirectory(Char)
 
 IF(WIN32)
     add_executable(play main.cpp)
-	target_link_libraries(play  PUBLIC ${SDL2_LIBRARY_TEMP} ${SDL2MAIN_LIBRARY} ${SDL2_IMAGE_LIBRARY} renderer scenario char)
+	target_link_libraries(play  PUBLIC ${SDL2MAIN_LIBRARY} ${SDL2_IMAGE_LIBRARY} SDL2 renderer scenario char)
 	target_include_directories(play PUBLIC ${CMAKE_SOURCE_DIR})
 ELSE()
 	add_executable(play main.cpp)

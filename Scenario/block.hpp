@@ -10,6 +10,6 @@ class Block : public RenderableObject
     protected:
     public:
         inline bool getIsIndestructible(){return is_indestructible;};
-        inline bool setIsIndestructible(bool is_indestructible){this->is_indestructible = true;};
+        inline void setIsIndestructible(bool is_indestructible){this->is_indestructible = true;};
 
 };

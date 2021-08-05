@@ -8,10 +8,13 @@
 #include <Scenario/map.hpp>
 #include "IO/map_reader.hpp"
 #include <Char/char.hpp>
-#include <unistd.h>
+#include <chrono>
 #include <memory>
 #include "Memory/sdl_deleter.hpp"
+
 using namespace std;
+using namespace std::literals::chrono_literals;
+
 SDL_Renderer *  RendererWindow::renderer = NULL;
 
 #define NUMBER_OF_PLAYER_SPRITES 6
@@ -120,7 +123,7 @@ int main(int argc, char ** argv)
                  default:
                      break;
             }
-            usleep(10000);
+             std::this_thread::sleep_for(1ms);
         }
 
         SDL_Quit();

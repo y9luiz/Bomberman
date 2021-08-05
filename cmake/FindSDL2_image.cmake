@@ -44,6 +44,7 @@ find_path(SDL2_IMAGE_INCLUDE_DIR SDL_image.h
     ENV SDL2IMAGEDIR
     ENV SDL2DIR
     ${SDL2_DIR}
+    ${SDL2_INCLUDE_DIR}
   PATH_SUFFIXES SDL2
                 # path suffixes to search inside ENV{SDL2DIR}
                 include/SDL2 include

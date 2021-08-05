@@ -1,8 +1,15 @@
 #pragma once
 
 #include <string.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    #include <SDL.h>
+    #include <SDL_image.h>
+#else
+    #include <SDL2/SDL.h>
+    #include <SDL2/SDL_image.h>
+#endif
+
 #include <iostream>
 
 class RenderableObject

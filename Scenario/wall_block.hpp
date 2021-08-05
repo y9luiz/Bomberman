@@ -1,7 +1,7 @@
 #pragma once
 #include "block.hpp"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
+
 class WallBlock :  public Block{
     private:
         static SDL_Texture * texture;

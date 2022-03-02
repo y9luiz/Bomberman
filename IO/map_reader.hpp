@@ -6,8 +6,16 @@
 #include <vector>
 #include <Scenario/map.hpp>
 #include <Scenario/defs.hpp>
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+#include <SDL.h>
+#include <SDL_image.h>
+#else
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#endif
+
+
 #include  <Scenario/ground_block.hpp>
 
 
@@ -25,7 +33,7 @@ Map  readMap(const char * filename)
 
         lines.push_back(std::string());
     }
-
+    lines.pop_back(); //popping a empty string
     m.data = new char*[lines.size()];
     m.w = lines[0].length();
     m.h =lines.size();
@@ -37,55 +45,6 @@ Map  readMap(const char * filename)
             m.data[i][j] = lines[i][j];
         }
     }
-
-
     return m;
-}
-
-
-
-void  initializeMapObjectDict(Map & m,std::map<char,SDL_Texture*> &texture_dict) 
-{
-   
-   int size_x = 640/32;
-   int size_y = 480/16;
-    size_x = size_y;
-    for(int i =0;i<m.h;i++)
-    {
-        for(int j=0;j<m.w;j++)
-        {
-            int pos_x = j*size_x;
-            int pos_y = i*size_y;
-            if (m.data[i][j] == BLOCK_GROUND)
-            {
-                SDL_Texture * texture = texture_dict[BLOCK_GROUND];
-                
-                WallBlock *b = new WallBlock (pos_x,pos_y,size_y,size_x,texture);
-
-                m.dict_texture.insert(std::pair<int,WallBlock>(i*m.w+j,*b));
-            }
-            else if (m.data[i][j] == BLOCK_WALL)
-            {
-                SDL_Texture * texture = texture_dict[BLOCK_WALL];
-                
-                GroundBlock *b = new GroundBlock (pos_x,pos_y,size_y,size_x,texture);
-                
-                m.dict_texture.insert(std::pair<int,GroundBlock>(i*m.w+j,*b));
-            }
-            
-            /*if( m.data[i][j] == PLAYER)
-            {
-                SDL_Texture * texture = texture_dict[PLAYER];
-                
-                Character *b = new Character (pos_x,pos_y,size_y,size_x,texture);
-                b->is_player = true;
-                m.dict_texture.insert(std::pair<int,Character>(i*m.w+j,*b));
-            }*/
-            
-        }
-    }
-    
-
-
 }
 #endif

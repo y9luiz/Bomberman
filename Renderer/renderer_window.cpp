@@ -23,19 +23,16 @@ RendererWindow::RendererWindow(const char * window_tittle, int width, int height
         throw std::runtime_error(SDL_GetError());
     }
 }
-
-SDL_Texture * RendererWindow::loadTexture(const char * file_path)
+SDL_Texture* RendererWindow::loadTexture(const char * file_path)
 {
     SDL_Texture * texture = NULL;
-
     texture = IMG_LoadTexture(renderer,file_path);
-
     if( texture == NULL)
     {
         throw std::runtime_error(SDL_GetError());
     }
-
-    return texture;
+    //std::unique_ptr<SDL_Texture> texture_ptr = std::unique_ptr<SDL_Texture>(*texture,SDL_Deleter());
+    return  texture;
 }
     
 void RendererWindow::render(SDL_Texture * texture, bool flip)
@@ -47,24 +44,16 @@ void RendererWindow::render(SDL_Texture * texture, bool flip)
 
 void RendererWindow::render(RenderableObject & obj, bool flip )
 {
-    //std::cout<<"bora "<<obj.getTexture()<<"\n";
     SDL_Rect src;
     src.x=0;
     src.y=0;
-    src.h=32;
-    src.w=32;
+    src.h=block_h_;
+    src.w=block_w_;
     
     SDL_Rect dst = obj.getRect();
-    dst.x=dst.x;
-    dst.w=dst.w;
-    dst.h=dst.h;
-    if (obj.is_player)
-    {
-        src.h = src.h*2;
-    }
+   
     if(flip){
         SDL_RendererFlip flip;
-
         flip =SDL_FLIP_HORIZONTAL;
         SDL_RenderCopyEx(renderer,obj.getTexture(),&src,&dst,0,NULL,flip);
     }
@@ -75,12 +64,18 @@ void RendererWindow::render(RenderableObject & obj, bool flip )
 void RendererWindow::renderMap(Map & scenario_map )
 {
 
+    char val;
     for(int i =0;i<scenario_map.h;i++)
     {
         for(int j=0;j<scenario_map.w;j++)
         {
-            render(scenario_map.dict_texture[i*scenario_map.w+j]);
-
+            val = scenario_map.data[i][j];
+            
+            if(scenario_map.dict_texture[val]!= nullptr){
+                scenario_map.dict_texture[val]->setX(j*block_w_);
+                scenario_map.dict_texture[val]->setY(i*block_h_);
+                render(*scenario_map.dict_texture[val]);
+            }
         }
     }
 }

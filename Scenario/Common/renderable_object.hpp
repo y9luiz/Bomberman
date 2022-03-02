@@ -1,22 +1,29 @@
 #pragma once
 
 #include <string.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    #include <SDL.h>
+    #include <SDL_image.h>
+#else
+    #include <SDL2/SDL.h>
+    #include <SDL2/SDL_image.h>
+#endif
+
 #include <iostream>
+
 class RenderableObject
 {
-protected:
-    SDL_Texture * texture;
-private:
-    char * name;
-    SDL_Rect rect;
-public:
-
-    ~RenderableObject(){
-        //clearTexture();
-        is_player = false;
-    };
+    protected:
+        SDL_Texture * texture;
+    private:
+        char * name;
+        SDL_Rect rect;
+    public:
+        ~RenderableObject(){
+            //clearTexture();
+            is_player = false;
+        };
     inline void setTexture(SDL_Texture * texture){ this->texture = texture;};
     inline  SDL_Texture* getTexture(){return texture;};
     inline void setHeight(int height){rect.h = height;};
